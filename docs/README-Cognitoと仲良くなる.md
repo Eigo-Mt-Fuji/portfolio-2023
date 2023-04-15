@@ -144,7 +144,6 @@ import (
 	backoff "github.com/lestrrat-go/backoff/v2"
 )
 
-// TODO: 検証時の暫定処理です(本開発時は別途設計を行う必要があります)↓↓
 // Cognitoから返されるTokenの構造に合わせてStructを定義する
 type CognitoJwtClaims struct {
 	Sub string `json:"sub"`
@@ -169,35 +168,34 @@ func Verify(tokenString string) (CognitoJwtClaims, error) {
 	// Cognitoパブリックキーを使って、Cognitoが発行したJSON Web Token(ここではIDトークン)の復号・検証
 	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 
-			// ユーザープールは、SHA-256 による RSA 署名である RS256 暗号化アルゴリズムを使用 - https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html
-			_, ok := token.Method.(*jwt.SigningMethodRSA);
-			if !ok {
-				return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
-			}
+		// ユーザープールは、SHA-256 による RSA 署名である RS256 暗号化アルゴリズムを使用 - https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html
+		_, ok := token.Method.(*jwt.SigningMethodRSA);
+		if !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
 
-			kid, ok := token.Header["kid"].(string)
-			if !ok {
-					return nil, errors.New("kid header not found")
-			}
+		kid, ok := token.Header["kid"].(string)
+		if !ok {
+			return nil, errors.New("kid header not found")
+		}
 
-			// "kid" must be present in the public keys set （アプリケーションで独自にキャッシュした場合は、キャッシュ内に対応するパブリックキーが見つからければキャッシュクリア＋再取得した上で判断する）
-			key, ok := publicKeySet.LookupKeyID(kid);
-			if  !ok {
-					return nil, fmt.Errorf("key %v not found", kid)
-			}
+		// "kid" must be present in the public keys set （アプリケーションで独自にキャッシュした場合は、キャッシュ内に対応するパブリックキーが見つからければキャッシュクリア＋再取得した上で判断する）
+		key, ok := publicKeySet.LookupKeyID(kid);
+		if  !ok {
+			return nil, fmt.Errorf("key %v not found", kid)
+		}
 
-			var tokenKey interface{}
-			if err := key.Raw(&tokenKey); err != nil {
-				return nil, errors.New("failed to create token key")
-			}
-			return tokenKey, nil
+		var tokenKey interface{}
+		if err := key.Raw(&tokenKey); err != nil {
+			return nil, errors.New("failed to create token key")
+		}
+		return tokenKey, nil
 	})
 
 	if err != nil {
 		fmt.Println(tokenString, err)
 		return jwtClaims, err
 	}
-	// 一度JSONへ変換
 	jsonString, err := json.Marshal(token.Claims)
 	if err != nil {
 		fmt.Println("JSON Marshal error: ", err)
