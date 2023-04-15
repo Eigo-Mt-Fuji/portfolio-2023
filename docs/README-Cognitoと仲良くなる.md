@@ -100,3 +100,99 @@ AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する�
 | auth_time | 認証された時刻(1970年1月1日からの秒数) |
 | exp | トークンの有効期限(1970年1月1日からの秒数) |
 | iat | トークンの発行時刻(1970年1月1日からの秒数) |
+
+
+## Golang
+
+
+```golang
+
+package jwt
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"os"
+	"time"
+	"encoding/json"
+	jwt "github.com/golang-jwt/jwt"
+	jwk "github.com/lestrrat-go/jwx/jwk"
+	backoff "github.com/lestrrat-go/backoff/v2"
+)
+
+// TODO: 検証時の暫定処理です(本開発時は別途設計を行う必要があります)↓↓
+// Cognitoから返されるTokenの構造に合わせてStructを定義する
+type CognitoJwtClaims struct {
+	Sub string `json:"sub"`
+	Username  string `json:"cognito:username"`
+	Email string `json:"email"`
+	EmailVerified bool `json:"email_verified"`
+	Expire  int64 `json:"exp"`
+}
+
+func Verify(tokenString string) (CognitoJwtClaims, error) {
+	var jwtClaims CognitoJwtClaims
+	claims := jwt.MapClaims{}
+	// see: AWS Amazon Cognito JSON ウェブトークンの署名を復号して検証するには https://aws.amazon.com/jp/premiumsupport/knowledge-center/decode-verify-cognito-json-token/
+	// see: awslabs/aws-jwt-verify cognito-verifier(typescript) https://github.com/awslabs/aws-jwt-verify/blob/main/src/cognito-verifier.ts
+	publicKeysURL := os.Getenv("COGNITO_USER_POOL_PUBLIC_KEY")
+	fetchOption  := jwk.WithFetchBackoff(backoff.Null())
+	publicKeySet, err := jwk.Fetch(context.TODO(), publicKeysURL, fetchOption)
+	if err != nil {
+		fmt.Println(tokenString, err)
+		return jwtClaims, err
+	}
+	// Cognitoパブリックキーを使って、Cognitoが発行したJSON Web Token(ここではIDトークン)の復号・検証
+	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
+
+			// ユーザープールは、SHA-256 による RSA 署名である RS256 暗号化アルゴリズムを使用 - https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html
+			_, ok := token.Method.(*jwt.SigningMethodRSA);
+			if !ok {
+				return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			}
+
+			kid, ok := token.Header["kid"].(string)
+			if !ok {
+					return nil, errors.New("kid header not found")
+			}
+
+			// "kid" must be present in the public keys set （アプリケーションで独自にキャッシュした場合は、キャッシュ内に対応するパブリックキーが見つからければキャッシュクリア＋再取得した上で判断する）
+			key, ok := publicKeySet.LookupKeyID(kid);
+			if  !ok {
+					return nil, fmt.Errorf("key %v not found", kid)
+			}
+
+			var tokenKey interface{}
+			if err := key.Raw(&tokenKey); err != nil {
+				return nil, errors.New("failed to create token key")
+			}
+			return tokenKey, nil
+	})
+
+	if err != nil {
+		fmt.Println(tokenString, err)
+		return jwtClaims, err
+	}
+	// 一度JSONへ変換
+	jsonString, err := json.Marshal(token.Claims)
+	if err != nil {
+		fmt.Println("JSON Marshal error: ", err)
+		return jwtClaims, err
+	}
+
+	// 定義したStructへ変換
+	if err := json.Unmarshal(jsonString, &jwtClaims); err != nil {
+		fmt.Println("jsonunmarshal error", err)
+		return jwtClaims, err
+	}
+	
+	// check expire time https://openid.net/specs/openid-connect-core-1_0.html#Claims
+	now := time.Now()
+	if time.Unix(jwtClaims.Expire, 0).Before(now) || time.Unix(jwtClaims.Expire, 0).Equal(now) {
+		err = errors.New("token is expired")
+		return jwtClaims, err
+	
+	return jwtClaims, nil
+}
+```
