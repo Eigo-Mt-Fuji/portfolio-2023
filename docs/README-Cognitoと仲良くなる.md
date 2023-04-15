@@ -192,7 +192,8 @@ func Verify(tokenString string) (CognitoJwtClaims, error) {
 	if time.Unix(jwtClaims.Expire, 0).Before(now) || time.Unix(jwtClaims.Expire, 0).Equal(now) {
 		err = errors.New("token is expired")
 		return jwtClaims, err
-	
+	}
+
 	return jwtClaims, nil
 }
 ```
