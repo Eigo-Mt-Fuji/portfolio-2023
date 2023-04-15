@@ -245,3 +245,73 @@ func Verify(tokenString string) (CognitoJwtClaims, error) {
 	return jwtClaims, nil
 }
 ```
+
+## Terraform(Cognito UserPool)
+
+```
+resource "aws_cognito_user_pool" "this" {
+  provider = aws.app_local
+
+  name = "app-${terraform.workspace}-user-pool"
+  # https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-attributes.html#cognito-user-pools-standard-attributes
+  username_configuration {
+    # username case sensitivity will be applied for all users
+    case_sensitive = false
+  }
+  alias_attributes = [ "email" ]
+  auto_verified_attributes = ["email"]
+  password_policy {
+    minimum_length = 8
+    require_lowercase = true
+    require_numbers = true
+    require_symbols = true
+    require_uppercase = true
+    temporary_password_validity_days = 7 
+  }
+  email_configuration {
+    configuration_set = "ses-set"
+    email_sending_account = "DEVELOPER"
+    from_email_address = "no-reply <no-reply@efgriver.com>" 
+  }
+
+  mfa_configuration          = "OPTIONAL"
+  sms_authentication_message = "Your code is {####}"
+  verification_message_template {
+    default_email_option = "CONFIRM_WITH_CODE" # CONFIRM_WITH_LINK
+  }
+  admin_create_user_config {
+    allow_admin_create_user_only = false
+  }
+
+  # available method a user can use to recover their forgotten password
+  account_recovery_setting {
+    recovery_mechanism {
+      name     = "verified_email"
+      priority = 1
+    }
+  }
+  
+  tags = local.tags
+}
+
+resource "aws_cognito_user_pool_client" "this" {
+  provider = aws.app_local
+  name = "app-${terraform.workspace}-user-pool-client"
+  user_pool_id = aws_cognito_user_pool.this.id
+
+  access_token_validity                         = 60
+  id_token_validity                             = 60
+  token_validity_units {
+    access_token  = "minutes"
+    id_token      = "minutes"
+    refresh_token = "days"
+  }
+  explicit_auth_flows                           = [
+    "ALLOW_REFRESH_TOKEN_AUTH",
+    "ALLOW_USER_SRP_AUTH",
+  ]
+  supported_identity_providers                  = [
+    "COGNITO",
+  ]
+}
+```
