@@ -5,11 +5,11 @@
 AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する。
 そういうお気持ちの、記録。
 
-## 構成
+## アプリケーション構成(フロントエンド-バックエンドコラボレーション)
 
 ![image](https://user-images.githubusercontent.com/14959592/232183094-8dc62130-36a4-41dd-adfe-3b4b8814cf72.png)
 
-## Cognito APIユースケース
+## Cognito APIリスト(ユースケース)
 
 | AWSサービス| 操作（日本語名）| AWS API名 | 権限レベル | 
 | --- | --- |  --- |  --- |
@@ -74,7 +74,7 @@ AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する�
 | | | UnlinkIdentity| 一般| 
 | | Cognito JWTトークン検証| （APIではない）| ー | 
 
-## IDトークン構造
+## Cognito JSON Web Token構造(IDトークン編)
 
 ### ヘッダ
 
@@ -102,7 +102,9 @@ AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する�
 | iat | トークンの発行時刻(1970年1月1日からの秒数) |
 
 
-## Amplify SDK
+## コーディングスニペット
+
+### Amplify SDK
 
 ```typescript
 
@@ -153,7 +155,7 @@ async function loginUser(
 }
 ```
 
-## Golang
+### Golang
 
 ```golang
 
@@ -246,7 +248,7 @@ func Verify(tokenString string) (CognitoJwtClaims, error) {
 }
 ```
 
-## Terraform(Cognito UserPool)
+### Terraform(Cognito UserPool IaC)
 
 ```
 resource "aws_cognito_user_pool" "this" {
