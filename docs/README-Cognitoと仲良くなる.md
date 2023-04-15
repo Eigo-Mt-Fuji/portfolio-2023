@@ -9,12 +9,6 @@ AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する�
 
 [![image](https://user-images.githubusercontent.com/14959592/232187886-bdec83c9-bb19-4e78-a46a-f0e45c5994ee.png)](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html)
 
-## アプリケーション構成
-
-`フロントエンド-バックエンドコラボレーション`
-
-![image](https://user-images.githubusercontent.com/14959592/232183094-8dc62130-36a4-41dd-adfe-3b4b8814cf72.png)
-
 ## Cognito APIリスト
 
 `ユースケース`
@@ -110,9 +104,15 @@ AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する�
 | iat | トークンの発行時刻(1970年1月1日からの秒数) |
 
 
+## Cognitoを利用したWebアプリケーション構築
+
+### アプリケーション構成
+
+![image](https://user-images.githubusercontent.com/14959592/232183094-8dc62130-36a4-41dd-adfe-3b4b8814cf72.png)
+
 ## コードスニペット
 
-### Amplify SDK
+### フロントエンド（Amplify SDK）
 
 ```typescript
 
@@ -163,7 +163,7 @@ async function loginUser(
 }
 ```
 
-### Golang
+### バックエンド（Golang／IDトークン検証）
 
 ```golang
 
