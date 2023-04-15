@@ -126,6 +126,33 @@ const amplifyConfigure = {
 export default amplifyConfigure;
 ```
 
+- Signin(Standard)
+
+```
+async function loginUser(
+  username: string,
+  password: string,
+  { dispatchers, userInfoApi }: MethodDeps,
+) {
+
+  try {
+    dispatchers.userFetch();
+
+    const user = await Auth.signIn(account, password);
+
+    const idToken = user.signInUserSession.idToken.jwtToken;
+    const appUser = await userInfoApi(idToken);
+
+    dispatchers.userFetchOK({user: appUser});
+    return appUser;
+  } catch (e: unknown) {
+
+    dispatchers.userFetchNG(new ApiStatus({error: e as AxiosError | Error | undefined}));
+    dispatchers?.flashAppend(makeErrorFlash(e));
+  }
+}
+```
+
 ## Golang
 
 ```golang
