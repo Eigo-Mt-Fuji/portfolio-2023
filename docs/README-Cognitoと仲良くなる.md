@@ -138,7 +138,7 @@ async function loginUser(
   try {
     dispatchers.userFetch();
 
-    const user = await Auth.signIn(account, password);
+    const user = await Auth.signIn(username, password);
 
     const idToken = user.signInUserSession.idToken.jwtToken;
     const appUser = await userInfoApi(idToken);
