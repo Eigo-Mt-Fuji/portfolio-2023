@@ -102,8 +102,31 @@ AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する�
 | iat | トークンの発行時刻(1970年1月1日からの秒数) |
 
 
-## Golang
+## Amplify SDK
 
+```typescript
+
+// Configuring Amplify Categories: https://docs.amplify.aws/lib/client-configuration/configuring-amplify-categories/q/platform/js/
+const amplifyConfigure = {
+  // Auth(Cognito) https://docs.amplify.aws/lib/client-configuration/configuring-amplify-categories/q/platform/js/#scoped-configuration
+  Auth: {
+    region: process.env.NEXT_PUBLIC_AWS_REGION,
+    identityPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_IDENTITY_POOL_ID,
+    userPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID,
+    userPoolWebClientId: process.env.NEXT_PUBLIC_AWS_COGNITO_WEB_CLIENT_ID,
+    authenticationFlowType: process.env.NEXT_PUBLIC_AWS_COGNITO_AUTHENTICATION_FLOW_TYPE,
+  },
+
+  // workaround amplify's ssr:true behavior.(Once an application has been configured with ssr: true, client-side credentials are passed to the server via cookies. https://docs.amplify.aws/lib/ssr/q/platform/js/)
+  ssr: false,
+
+  // see: https://docs.amplify.aws/lib/auth/manageusers/q/platform/js/#managing-security-tokens
+  storage: window.sessionStorage,
+};
+export default amplifyConfigure;
+```
+
+## Golang
 
 ```golang
 
