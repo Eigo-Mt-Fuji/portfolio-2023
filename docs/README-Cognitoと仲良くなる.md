@@ -1,6 +1,15 @@
 # Cognitoと仲良くなる
 
-## Cognito API学習
+## これはなに?
+
+AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する。
+そういうお気持ちの、記録。
+
+## 構成
+
+![image](https://user-images.githubusercontent.com/14959592/232183094-8dc62130-36a4-41dd-adfe-3b4b8814cf72.png)
+
+## Cognito APIユースケース
 
 | AWSサービス| 操作（日本語名）| AWS API名 | 権限レベル | 
 | --- | --- |  --- |  --- |
