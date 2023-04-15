@@ -5,6 +5,10 @@
 AWSのCognitoと仲良くなって、GolangとReactでゴリゴリ開発する。
 そういうお気持ちの、記録。
 
+## AWS公式ユーザープール認証フロー
+
+[![image](https://user-images.githubusercontent.com/14959592/232187886-bdec83c9-bb19-4e78-a46a-f0e45c5994ee.png)](https://docs.aws.amazon.com/ja_jp/cognito/latest/developerguide/amazon-cognito-user-pools-authentication-flow.html)
+
 ## アプリケーション構成
 
 `フロントエンド-バックエンドコラボレーション`
