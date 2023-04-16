@@ -18,3 +18,7 @@
 https://note.com/efujikawa/n/nfd860def3d9c
 
 <img width=300 src="./img/Screenshot_20230415-171208_AnkiDroid.jpg" />
+
+## アーキテクト・カタ
+
+https://github.com/Eigo-Mt-Fuji/portfolio-2023/blob/main/docs/README-%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E6%A7%8B%E6%88%90%E5%9B%B3%E4%BD%9C%E6%88%90%E5%8A%9B%E3%81%AB%E7%A3%A8%E3%81%8D%E3%82%92%E6%8E%9B%E3%81%91%E3%82%8B.md
