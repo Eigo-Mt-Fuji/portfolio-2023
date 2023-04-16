@@ -13,4 +13,8 @@
 
 ## 英語力
 
+[頑張る日]Anki駆動英語学習の経過 - 進捗と改善(English Grammar in Useデッキの導入)
+
+https://note.com/efujikawa/n/nfd860def3d9c
+
 <img width=300 src="./img/Screenshot_20230415-171208_AnkiDroid.jpg" />
