@@ -10,3 +10,8 @@
 - [お仕事の進捗はこちら](https://github.com/Eigo-Mt-Fuji/efg-confidential/blob/main/%E4%BA%8B%E6%A5%AD%E9%80%B2%E6%8D%97.md)
 
 - [2022年はこちら](https://github.com/Eigo-Mt-Fuji/portfolio-2022)
+
+## 英語力
+
+
+![img](./img/Screenshot_20230415-171208_AnkiDroid.jpg)
