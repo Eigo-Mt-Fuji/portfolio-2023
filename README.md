@@ -13,5 +13,4 @@
 
 ## 英語力
 
-
-![img](./img/Screenshot_20230415-171208_AnkiDroid.jpg)
+<img width=300 src="./img/Screenshot_20230415-171208_AnkiDroid.jpg" />
