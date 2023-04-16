@@ -168,3 +168,6 @@
 書いた構成図
 サポートしてる特性
 
+アーキテクチャ カタ 
+数年前に考案された by Ted Neward
+https://nealford.com/katas/
