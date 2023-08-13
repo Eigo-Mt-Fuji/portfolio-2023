@@ -11,6 +11,8 @@
 
 - [2022年はこちら](https://github.com/Eigo-Mt-Fuji/portfolio-2022)
 
+![](./Screenshot_20230813-143407_X.jpg)
+
 ## 英語力
 
 [頑張る日]Anki駆動英語学習の経過 - 進捗と改善(English Grammar in Useデッキの導入)
