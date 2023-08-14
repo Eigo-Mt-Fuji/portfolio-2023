@@ -53,3 +53,8 @@ https://github.com/Eigo-Mt-Fuji/portfolio-2023/blob/main/docs/README-%E3%82%A2%E
     - 転: 工夫する（喜んでもらえそうなことを1つ探す）
     - 結: 可視化する・提案する、実現(実装)する(自分がどうしたいかを伝える,わかりやすくする,実践してみせる)
 
+
+## BingAIとChatGPT
+
+TBD
+
