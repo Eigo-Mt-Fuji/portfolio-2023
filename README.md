@@ -33,14 +33,13 @@
       - 「無限の知覚」を相手に強いる
         - 身動きを封じる
 
+## テスト・デシジョンテーブル
 
-## 英語力
-
-[頑張る日]Anki駆動英語学習の経過 - 進捗と改善(English Grammar in Useデッキの導入)
-
-https://note.com/efujikawa/n/nfd860def3d9c
-
-<img width=300 src="./img/Screenshot_20230415-171208_AnkiDroid.jpg" />
+- 一番負荷の高い組合せテスト
+- 限界値・境界値チェック
+- 必須のデータは省略できないこと、任意のデータは省略できること
+- 分岐網羅テスト(C0)
+- デシジョンテーブルに基づくNGパターンテスト
 
 ## アーキテクト・カタ
 
@@ -58,10 +57,10 @@ https://github.com/Eigo-Mt-Fuji/portfolio-2023/blob/main/docs/README-%E3%82%A2%E
 
 TBD
 
-## テスト・デシジョンテーブル
+## 英語力
 
-- 一番負荷の高い組合せテスト
-- 限界値・境界値チェック
-- 必須のデータは省略できないこと、任意のデータは省略できること
-- 分岐網羅テスト(C0)
-- デシジョンテーブルに基づくNGパターンテスト
+[頑張る日]Anki駆動英語学習の経過 - 進捗と改善(English Grammar in Useデッキの導入)
+
+https://note.com/efujikawa/n/nfd860def3d9c
+
+<img width=300 src="./img/Screenshot_20230415-171208_AnkiDroid.jpg" />
