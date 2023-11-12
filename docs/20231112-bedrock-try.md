@@ -51,3 +51,54 @@ Human: はい、脳トレアプリを作りたいと思っています。
 
 画像データはBLOB型でテーブルに直接保存するか、外部ストレージに保存しリンク情報を管理し
 ```
+
+```
+Human: はい、回答ありがとうございます。
+では、そのテーブル定義を出してください。
+
+大量の問題データや回答履歴データをどのように分割すればいいでしょうか。
+```
+
+```
+Assistant:
+ はい、そのデータベーステーブルの定義を以下のように記述します:
+```
+
+```sql
+-- ユーザーテーブル
+CREATE TABLE users (
+  id serial PRIMARY KEY,
+  name text, 
+  image_id text
+);
+
+-- 問題テーブル 
+CREATE TABLE problems (
+  id serial PRIMARY KEY,
+  question text,
+  answers text[], 
+  correct int  
+);
+
+-- 回答履歴テーブル
+CREATE TABLE histories (
+  id serial PRIMARY KEY,
+  user_id int REFERENCES users(id),
+  problem_id int REFERENCES problems(id), 
+  answer int,
+  time timestamp  
+);
+```
+
+大量データ対策として、回答履歴テーブルは問題IDごとやユーザーIDごとにデータを分割(partition)することを推奨します。
+
+例えば:
+
+```sql
+CREATE TABLE histories_problem PARTITION OF histories 
+  FOR VALUES IN (1, 100);
+
+CREATE TABLE histories_problem PARTITION OF histories
+  FOR VALUES IN (101,200);
+```
+
